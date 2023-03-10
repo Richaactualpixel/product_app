@@ -55,3 +55,8 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'faker'
 gem 'has_scope'
+
+gem 'will_paginate', '~> 3.3.0'
+
+gem 'active_model_serializers', '~> 0.10.0'
+

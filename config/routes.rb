@@ -1,4 +1,13 @@
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+
+  #product
   get '/product_list', to: 'products#product_list'
+  post '/create_product', to: 'products#create'
+  
+  #user
+  post '/create_user', to: 'users#create'
+  get '/user_list', to: 'users#index'
+  
+  #country
+  get 'countries_list', to: 'countries#countries_list'
 end
