@@ -9,7 +9,12 @@ class ProductsController < ApplicationController
   #params filter{product_type: new/old, price_order: asc{low to high}/desc{high to low}}
   def product_list
     @product_data = Product.all
-    @products = apply_scopes(@product_data)
+    
+    @products = filter_by_name(@product_data, params[:name]) if params[:name].present?
+    
+    @products = filter_by_price(@product_data, params[:min_price], params[:max_price]) if params[:min_price].present? || params[:max_price].present?
+    
+    @products = apply_scopes(@products)
     render json: {products: @products}
   end
 
@@ -38,6 +43,22 @@ class ProductsController < ApplicationController
     
     if @product.present?
       render json: {message: "product name should be unique for a user" }, status: :unprocessable_entity
+    end
+  end
+
+  #Filter for product name
+  def filter_by_name(products, name)
+    products.where("name LIKE ?", "%#{name}%")
+  end
+  
+  #Filter for product min and max product price
+  def filter_by_price(products, min_price, max_price)
+    if min_price.present? && max_price.present?
+      products.where(price: min_price..max_price)
+    elsif min_price.present?
+      products.where("price >= ?", min_price)
+    elsif max_price.present?
+      products.where("price <= ?", max_price)
     end
   end
 end
